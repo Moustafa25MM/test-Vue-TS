@@ -1,80 +1,39 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import Navbar from '../src/components/Navbar.vue'
+import ListProducts from './views/Category/ListProducts.vue'
+const baseURL = 'http://localhost:4300/'
+const products = ref(null)
+const categories = ref(null)
+
+const fetchData = async () => {
+  try {
+    const productResponse = await axios.get(`${baseURL}products/all`)
+    products.value = productResponse.data
+  } catch (err) {
+    console.error(err)
+  }
+
+  try {
+    const categoryResponse = await axios.get(`${baseURL}categories/all`)
+    categories.value = categoryResponse.data
+  } catch (err) {
+    console.error(err)
+  }
+}
+onMounted(fetchData)
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <main>
+    <Navbar />
+    <ListProducts v-if="categories" :categories="categories" :products="products" />
+  </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+<style>
+#app {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 </style>
