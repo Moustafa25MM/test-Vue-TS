@@ -6,7 +6,7 @@
     <div class="navbar-toggle" @click="toggleNavbar">☰</div>
     <div class="navbar-menu" :class="{ 'is-active': navbarActive }">
       <div class="navbar-start">
-        <a href="#" class="navbar-item is-active">Home</a>
+        <a href="/home" class="navbar-item is-active">Home</a>
         <!-- Add other navbar items here -->
       </div>
     </div>

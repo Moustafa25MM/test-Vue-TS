@@ -28,7 +28,16 @@ onMounted(fetchData)
 <template>
   <main>
     <Navbar />
-    <ListProducts v-if="categories" :categories="categories" :products="products" />
+    <div style="min-height: 60vh">
+      <router-view
+        v-if="products && categories"
+        :baseURL="baseURL"
+        :products="products"
+        :categories="categories"
+        @fetchData="fetchData"
+      >
+      </router-view>
+    </div>
   </main>
 </template>
 

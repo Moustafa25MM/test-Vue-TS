@@ -1,65 +1,43 @@
 <template>
-  <div class="container">
-    <div class="row pt-5">
-      <div class="col-md-1"></div>
-      <div class="col-md-4 col-12">
-        <img :src="product.imageURL" :alt="product.name" class="img-fluid" />
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-1 mb-4">
+        <img :src="product.picture" :alt="product.name" class="img-fluid rounded shadow" />
       </div>
-      <div class="col-md-6 col-12 pt-3 pt-md-0">
-        <h4>{{ product.name }}</h4>
-        <h6 class="category font-italic">{{ category.categoryName }}</h6>
-        <h6 class="font-weight-bold">$ {{ product.price }}</h6>
-        <p>
-          {{ product.description }}
-        </p>
-
-        <div class="d-flex flex-row justify-content-between">
-          <div class="input-group col-md-3 col-4 p-0">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Quantity</span>
-            </div>
-            <input class="form-control" type="number" v-bind:value="quantity" />
-          </div>
-
-          <div class="input-group col-md-3 col-4 p-0">
-            <button type="button" id="add-to-cart-button" class="btn" @click="addToCart(this.id)">
-              Add to Cart
-              <ion-icon name="cart-outline" v-pre></ion-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="features pt-3">
-          <h5><strong>Features</strong></h5>
-          <ul>
-            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-            <li>Officia quas, officiis eius magni error magnam voluptatem</li>
-            <li>nesciunt quod! Earum voluptatibus quaerat dolorem doloribus</li>
-            <li>molestias ipsum ab, ipsa consectetur laboriosam soluta et</li>
-            <li>ut doloremque dolore corrupti, architecto iusto beatae.</li>
+      <div class="col-lg-4">
+        <h2 class="product-name"><span>Name :</span> {{ product.name }}</h2>
+        <h2 class="product-name"><span>Price :</span> {{ product.price }}</h2>
+        <h6 class="category text-muted"><span>Category :</span> {{ categoryName }}</h6>
+        <hr />
+        <div class="features mt-4">
+          <h5 class="mb-3">Features</h5>
+          <ul class="list-unstyled">
+            <!-- Feature list items will go here -->
           </ul>
         </div>
-
-        <button
-          id="wishlist-button"
-          class="btn mr-3 p-1 py-0"
-          :class="{ product_added_wishlist: isAddedToWishlist }"
-          @click="addToWishList(this.id)"
-        >
-          {{ wishlistString }}
-        </button>
-        <button
-          id="show-cart-button"
-          type="button"
-          class="btn mr-3 p-1 py-0"
-          @click="listCartItems()"
-        >
-          Show Cart
-
-          <ion-icon name="cart-outline" v-pre></ion-icon>
-        </button>
+        <!-- Add action buttons -->
+        <div class="action-buttons mt-5">
+          <!-- <router-link
+            :to="{ name: 'editProduct', params: { productId: product.id } }"
+            class="btn btn-info btn-lg btn-block mb-2"
+          >
+            Edit Product
+          </router-link>
+          <router-link
+            :to="{ name: 'deleteProduct', params: { productId: product.id } }"
+            class="btn btn-danger btn-lg btn-block mb-2"
+          >
+            Delete Product
+          </router-link> -->
+          <button id="add-to-cart-button" class="btn btn-warning btn-lg btn-block mb-2">
+            Add to Cart
+          </button>
+          <button id="wishlist-button" class="btn btn-secondary btn-lg btn-block mb-2">
+            Add to Wishlist
+          </button>
+          <button id="show-cart-button" class="btn btn-dark btn-lg btn-block">View Cart</button>
+        </div>
       </div>
-      <div class="col-md-1"></div>
     </div>
   </div>
 </template>
@@ -69,115 +47,75 @@ export default {
   data() {
     return {
       product: {},
-      category: {},
-      id: null,
-      token: null,
-      isAddedToWishlist: false,
-      wishlistString: 'Add to wishlist',
-      quantity: 1
+      categoryName: ''
     }
   },
   props: ['baseURL', 'products', 'categories'],
-  methods: {
-    addToWishList(productId) {
-      axios
-        .post(`${this.baseURL}wishlist/add?token=${this.token}`, {
-          id: productId
-        })
-        .then(
-          (response) => {
-            if (response.status == 201) {
-              this.isAddedToWishlist = true
-              this.wishlistString = 'Added to WishList'
-            }
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
-    },
-    addToCart(productId) {
-      if (!this.token) {
-        swal({
-          text: 'Please log in first!',
-          icon: 'error'
-        })
-        return
-      }
-      axios
-        .post(`${this.baseURL}cart/add?token=${this.token}`, {
-          productId: productId,
-          quantity: this.quantity
-        })
-        .then(
-          (response) => {
-            if (response.status == 201) {
-              swal({
-                text: 'Product Added to the cart!',
-                icon: 'success',
-                closeOnClickOutside: false
-              })
-              // refresh nav bar
-              this.$emit('fetchData')
-            }
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
-    },
-
-    listCartItems() {
-      axios.get(`${this.baseURL}cart/?token=${this.token}`).then(
-        (response) => {
-          if (response.status === 200) {
-            this.$router.push('/cart')
-          }
-        },
-        (error) => {
-          console.log(error)
-        }
-      )
-    }
-  },
   mounted() {
-    this.id = this.$route.params.id
-    this.product = this.products.find((product) => product.id == this.id)
-    this.category = this.categories.find((category) => category.id == this.product.categoryId)
-    this.token = localStorage.getItem('token')
+    console.log('here')
+    const id = this.$route.params.id
+    const product = this.products.find((product) => product.id == id)
+    if (product) {
+      this.product = product
+      const category = this.categories.find((category) => category.id == this.product.categoryId)
+      this.categoryName = category ? category.name : 'Category not found'
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.product-name {
+  color: #333;
+  font-weight: 700;
+}
+
 .category {
-  font-weight: 400;
+  font-size: 0.9rem;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
+/* Style adjustments for buttons */
 #add-to-cart-button {
   background-color: #febd69;
+  border: none;
 }
 
 #wishlist-button {
   background-color: #b9b9b9;
-  border-radius: 0;
+  border: none;
 }
 
 #show-cart-button {
   background-color: #131921;
   color: white;
-  border-radius: 0;
+  border: none;
+}
+
+/* Additional global style adjustments */
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+ul li::before {
+  content: '✔';
+  color: green;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .action-buttons button {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .offset-lg-1 {
+    margin-left: 0;
+  }
 }
 </style>
