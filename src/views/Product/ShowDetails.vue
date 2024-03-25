@@ -23,12 +23,9 @@
           >
             Edit Product
           </router-link>
-          <!-- <router-link
-            :to="{ name: 'deleteProduct', params: { productId: product.id } }"
-            class="btn btn-danger btn-lg btn-block mb-2"
-          >
+          <button @click="confirmDeletion" class="btn btn-danger btn-lg btn-block mb-2">
             Delete Product
-          </router-link> -->
+          </button>
           <button id="add-to-cart-button" class="btn btn-warning btn-lg btn-block mb-2">
             Add to Cart
           </button>
@@ -43,6 +40,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
 export default {
   data() {
     return {
@@ -51,8 +51,38 @@ export default {
     }
   },
   props: ['baseURL', 'products', 'categories'],
+  methods: {
+    // All methods should be within this object
+    confirmDeletion() {
+      console.log('confirmDeletion called')
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteProduct()
+        }
+      })
+    },
+    async deleteProduct() {
+      console.log('deleteProduct called')
+      try {
+        await axios.delete(`${this.baseURL}products/${this.product.id}`)
+        Swal.fire('Deleted!', 'Your product has been deleted.', 'success')
+        this.$emit('fetchData')
+        this.$router.push({ name: 'listproducts' }) // Replace with your actual route name
+      } catch (error) {
+        Swal.fire('Error!', `Product could not be deleted: ${error.message}`, 'error')
+      }
+    }
+  },
   mounted() {
-    console.log('here')
+    console.log('mounted hook called')
     const id = this.$route.params.id
     const product = this.products.find((product) => product.id == id)
     if (product) {

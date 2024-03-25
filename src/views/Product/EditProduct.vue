@@ -27,6 +27,7 @@
             <input type="number" class="form-control" v-model="product.price" />
           </div>
           <button type="button" class="btn btn-primary" @click="editProduct">Submit</button>
+          <button type="button" class="btn btn-secondary" @click="cancelEdit">Cancel</button>
         </form>
       </div>
       <div class="col-3"></div>
@@ -70,6 +71,9 @@ export default {
             closeOnClickOutside: false
           })
         })
+    },
+    cancelEdit() {
+      this.$router.push({ name: 'listproducts' })
     }
   },
   mounted() {
