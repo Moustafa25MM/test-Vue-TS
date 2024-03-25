@@ -3,13 +3,13 @@
     <div class="row">
       <div class="col-12 text-center">
         <h4 class="pt-3">Our Categories</h4>
-        <router-link
+        <!-- <router-link
           id="add-category"
           :to="{ name: 'AddCategory' }"
           v-show="$route.name == 'AdminCategory'"
         >
           <button class="btn">Add a new Category</button>
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
         :key="category.id"
         class="col-md-6 col-xl-4 col-12 pt-3 justify-content-around d-flex"
       >
-        <CategoryBox :category="category"> </CategoryBox>
+        <CategoryBox :category="category" :categories="categories" />
       </div>
     </div>
   </div>
@@ -30,12 +30,7 @@ import CategoryBox from '../../components/Category/CategoryBox.vue'
 export default {
   name: 'Category',
   components: { CategoryBox },
-  props: ['baseURL', 'categories'],
-  mounted() {
-    if (this.$route.name == 'AdminCategory' && !localStorage.getItem('token')) {
-      this.$router.push({ name: 'Signin' })
-    }
-  }
+  props: ['baseURL', 'categories']
 }
 </script>
 

@@ -1,13 +1,22 @@
 <template>
   <div class="navbar">
-    <div class="navbar-brand">
-      <a href="/listproducts">Products</a>
+    <div class="navbar-group">
+      <router-link
+        to="/listproducts"
+        class="navbar-brand"
+        :class="{ 'is-active': isActive('/listproducts') }"
+        >Products</router-link
+      >
+      <router-link
+        to="/categories"
+        class="navbar-brand"
+        :class="{ 'is-active': isActive('/categories') }"
+        >Categories</router-link
+      >
     </div>
     <div class="navbar-toggle" @click="toggleNavbar">☰</div>
     <div class="navbar-menu" :class="{ 'is-active': navbarActive }">
-      <div class="navbar-start">
-        <a href="/home" class="navbar-item is-active">Home</a>
-      </div>
+      <router-link to="/home" class="navbar-item">Home</router-link>
     </div>
   </div>
 </template>
@@ -16,18 +25,35 @@
 export default {
   data() {
     return {
-      navbarActive: false
+      navbarActive: false,
+      currentRoute: '/'
     }
   },
   methods: {
     toggleNavbar() {
       this.navbarActive = !this.navbarActive
+    },
+    isActive(route) {
+      return this.currentRoute === route
     }
+  },
+  mounted() {
+    this.currentRoute = window.location.pathname
   }
 }
 </script>
 
 <style scoped>
+.navbar-group {
+  display: flex;
+  align-items: center;
+}
+
+/* Highlight the active navbar-brand */
+.navbar-brand.is-active {
+  color: #3273dc; /* Active color, change as desired */
+  font-weight: bold;
+}
 .navbar {
   display: flex;
   justify-content: space-between;
