@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- ... other parts of your template ... -->
     <br />
 
     <router-link to="/product/add" class="btn btn-success mb-3">Add New Product</router-link>
@@ -13,7 +12,6 @@
         :key="product.id"
         class="col-md-6 col-xl-4 col-12 pt-3 justify-content-around d-flex"
       >
-        <!-- Use v-bind:product or :product shorthand to pass the product prop -->
         <ProductBox :product="product"></ProductBox>
       </div>
     </div>
@@ -42,7 +40,6 @@ export default {
         })
         .catch((error) => {
           console.error('There was an error fetching the products:', error)
-          // Handle the error, maybe show a user-friendly message
         })
     }
   },
@@ -65,13 +62,13 @@ h5 {
   font-weight: 300;
 }
 .btn-success {
-  background-color: #28a745; /* Bootstrap success color */
+  background-color: #28a745;
   border-color: #28a745;
   color: white;
 }
 
 .btn-success:hover {
-  background-color: #218838; /* Slightly darker on hover */
+  background-color: #218838;
   border-color: #1e7e34;
 }
 </style>

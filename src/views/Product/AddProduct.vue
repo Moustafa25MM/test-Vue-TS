@@ -102,27 +102,23 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 600px; /* Limit the width of the form for better aesthetics */
+  max-width: 600px;
 }
 
-/* Loader styling */
 .spinner-border {
   width: 3rem;
   height: 3rem;
 }
 
-/* Improve button appearance */
 .btn-primary,
 .btn-secondary {
   padding: 0.5rem 1.5rem;
 }
 
-/* Space between form fields */
 .form-group {
   margin-bottom: 1rem;
 }
 
-/* Style the file input to match the form */
 .form-control-file {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;

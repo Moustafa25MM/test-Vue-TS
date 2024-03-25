@@ -7,7 +7,6 @@
     <div class="navbar-menu" :class="{ 'is-active': navbarActive }">
       <div class="navbar-start">
         <a href="/home" class="navbar-item is-active">Home</a>
-        <!-- Add other navbar items here -->
       </div>
     </div>
   </div>
@@ -62,7 +61,6 @@ export default {
   background-color: #e2e6ea;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .navbar-menu {
     display: none;

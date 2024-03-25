@@ -11,9 +11,7 @@
         <hr />
         <div class="features mt-4">
           <h5 class="mb-3">Features</h5>
-          <ul class="list-unstyled">
-            <!-- Feature list items will go here -->
-          </ul>
+          <ul class="list-unstyled"></ul>
         </div>
         <!-- Add action buttons -->
         <div class="action-buttons mt-5">
@@ -52,7 +50,6 @@ export default {
   },
   props: ['baseURL', 'products', 'categories'],
   methods: {
-    // All methods should be within this object
     confirmDeletion() {
       console.log('confirmDeletion called')
       Swal.fire({
@@ -75,7 +72,7 @@ export default {
         await axios.delete(`${this.baseURL}products/${this.product.id}`)
         Swal.fire('Deleted!', 'Your product has been deleted.', 'success')
         this.$emit('fetchData')
-        this.$router.push({ name: 'listproducts' }) // Replace with your actual route name
+        this.$router.push({ name: 'listproducts' })
       } catch (error) {
         Swal.fire('Error!', `Product could not be deleted: ${error.message}`, 'error')
       }
@@ -104,7 +101,6 @@ export default {
   font-size: 0.9rem;
 }
 
-/* Style adjustments for buttons */
 #add-to-cart-button {
   background-color: #febd69;
   border: none;
@@ -121,7 +117,6 @@ export default {
   border: none;
 }
 
-/* Additional global style adjustments */
 ul {
   padding-left: 0;
   list-style-type: none;
@@ -136,7 +131,6 @@ ul li::before {
   margin-left: -1em;
 }
 
-/* Responsive adjustments */
 @media (max-width: 992px) {
   .action-buttons button {
     font-size: 1rem;

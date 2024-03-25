@@ -83,9 +83,9 @@ a {
 
 .card-title {
   color: #333;
-  font-size: 1.2rem; /* Slightly larger */
-  font-weight: 600; /* Make font weight bolder */
-  margin-bottom: 0.25rem; /* Add some spacing between title and category */
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .card-title:hover {
@@ -93,13 +93,13 @@ a {
 }
 
 .card-price {
-  color: #007bff; /* Use a primary color for price to make it stand out */
-  font-size: 1.1rem; /* Slightly larger font size for price */
-  font-weight: 700; /* Bolder font weight for price */
-  text-align: center; /* Center-align the price */
-  padding: 0.5rem 0; /* Padding above and below the price */
-  background-color: #f8f9fa; /* Light background for the footer area */
-  margin-bottom: 0; /* Remove any default margin */
+  font-size: 1.1rem;
+  color: #007bff;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.5rem 0;
+  background-color: #f8f9fa;
+  margin-bottom: 0;
 }
 
 .card-text {
@@ -110,6 +110,6 @@ a {
   float: right;
 }
 .card-footer {
-  border-top: 1px solid #dedede; /* Add a border to separate the image and price */
+  border-top: 1px solid #dedede;
 }
 </style>
