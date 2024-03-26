@@ -19,10 +19,10 @@
           >
             Edit Product
           </router-link>
-          <!-- <button @click="confirmDeletion" class="btn btn-danger btn-lg btn-block mb-2">
-            Delete Product
+          <button @click="confirmDeletion" class="btn btn-danger btn-lg btn-block mb-2">
+            Delete Category
           </button>
-          <button id="add-to-cart-button" class="btn btn-warning btn-lg btn-block mb-2">
+          <!-- <button id="add-to-cart-button" class="btn btn-warning btn-lg btn-block mb-2">
             Add to Cart
           </button>
           <button id="wishlist-button" class="btn btn-secondary btn-lg btn-block mb-2">
@@ -60,19 +60,19 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deleteProduct()
+          this.deleteCategory()
         }
       })
     },
-    async deleteProduct() {
-      console.log('deleteProduct called')
+    async deleteCategory() {
+      console.log('deleteCategory called')
       try {
-        await axios.delete(`${this.baseURL}products/${this.product.id}`)
-        Swal.fire('Deleted!', 'Your product has been deleted.', 'success')
+        await axios.delete(`${this.baseURL}categories/${this.category.id}`)
+        Swal.fire('Deleted!', 'Your category has been deleted.', 'success')
         this.$emit('fetchData')
-        this.$router.push({ name: 'listproducts' })
+        this.$router.push({ name: 'ListCategories' })
       } catch (error) {
-        Swal.fire('Error!', `Product could not be deleted: ${error.message}`, 'error')
+        Swal.fire('Error!', `Category could not be deleted: ${error.message}`, 'error')
       }
     }
   },
