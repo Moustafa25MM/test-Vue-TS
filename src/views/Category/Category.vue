@@ -2,14 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h4 class="pt-3">Our Categories</h4>
-        <!-- <router-link
-          id="add-category"
-          :to="{ name: 'AddCategory' }"
-          v-show="$route.name == 'AdminCategory'"
+        <br />
+        <router-link to="/categories/add" class="btn btn-success mb-3"
+          >Add New Category</router-link
         >
-          <button class="btn">Add a new Category</button>
-        </router-link> -->
+        <br />
+        <h4 class="pt-3">Our Categories</h4>
       </div>
     </div>
     <div class="row">
@@ -26,11 +24,38 @@
 
 <script lang="ts">
 import CategoryBox from '../../components/Category/CategoryBox.vue'
-
+import axios from 'axios'
 export default {
   name: 'Category',
   components: { CategoryBox },
-  props: ['baseURL', 'categories']
+  props: ['baseURL', 'categories'],
+  data() {
+    return {
+      categories: [] // Initialize as an empty array
+    }
+  },
+  methods: {
+    fetchCategories() {
+      axios
+        .get('http://localhost:4300/categories/all')
+        .then((response) => {
+          this.categories = response.data
+        })
+        .catch((error) => {
+          console.error('There was an error fetching the categories:', error)
+        })
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.path === '/categories/add') {
+        this.fetchCategories()
+      }
+    }
+  },
+  async mounted() {
+    this.fetchCategories()
+  }
 }
 </script>
 

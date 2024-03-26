@@ -30,6 +30,7 @@ onMounted(fetchData)
     <Navbar />
     <div style="min-height: 60vh">
       <router-view
+        :key="$route.path"
         v-if="products && categories"
         :baseURL="baseURL"
         :products="products"

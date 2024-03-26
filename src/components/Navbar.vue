@@ -22,23 +22,31 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+
 export default {
-  data() {
-    return {
-      navbarActive: false,
-      currentRoute: '/'
+  setup() {
+    const navbarActive = ref(false)
+    const route = useRoute()
+
+    const toggleNavbar = () => {
+      navbarActive.value = !navbarActive.value
     }
-  },
-  methods: {
-    toggleNavbar() {
-      this.navbarActive = !this.navbarActive
-    },
-    isActive(route) {
-      return this.currentRoute === route
+
+    const isActive = (routePath) => {
+      return route.path === routePath
     }
-  },
-  mounted() {
-    this.currentRoute = window.location.pathname
+
+    // Watch for route changes to update the active state
+    watch(
+      () => route.path,
+      (newPath) => {
+        navbarActive.value = false // Close the navbar on route change if needed
+      }
+    )
+
+    return { navbarActive, toggleNavbar, isActive }
   }
 }
 </script>
