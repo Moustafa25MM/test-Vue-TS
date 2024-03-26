@@ -50,7 +50,8 @@ export default {
     async editProduct() {
       const productData = {
         name: this.product.name,
-        categoryId: this.product.categoryId
+        categoryId: this.product.categoryId,
+        price: this.product.price
       }
       axios
         .put(`${this.baseURL}products/${this.id}`, productData)

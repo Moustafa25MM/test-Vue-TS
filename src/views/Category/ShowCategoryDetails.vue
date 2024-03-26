@@ -1,15 +1,27 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <div class="col-lg-6 offset-lg-1 mb-4">
+      <div class="col-lg-6 offset-lg-1 mb-4" v-if="category.picture">
         <img :src="category.picture" :alt="category.name" class="img-fluid rounded shadow" />
       </div>
       <div class="col-lg-4">
-        <h2 class="category-name"><span>Name :</span> {{ category.name }}</h2>
+        <h2 class="category-name"><span>Category Name :</span> {{ category.name }}</h2>
         <h6 class="category text-muted"><span>Parent Category :</span> {{ parentCategoryName }}</h6>
         <hr />
         <div class="features mt-4">
-          <h5 class="mb-3">Features</h5>
+          <!-- Display child categories -->
+          <ul v-if="category.children && category.children.length > 0">
+            <h5>Sub Categories :</h5>
+            <li v-for="childCategory in category.children" :key="childCategory.id">
+              {{ childCategory.name }} ({{ childCategory.productsCount }} products)
+              <ul>
+                <li v-for="product in childCategory.products" :key="product.id">
+                  {{ product.name }}
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div v-else>No Subcategories</div>
         </div>
         <!-- Add action buttons -->
         <div class="action-buttons mt-5">
@@ -17,18 +29,19 @@
             :to="{ name: 'editCategory', params: { id: category.id } }"
             class="btn btn-info btn-lg btn-block mb-2"
           >
-            Edit Product
+            Edit Category
           </router-link>
-          <button @click="confirmDeletion" class="btn btn-danger btn-lg btn-block mb-2">
+          <button
+            @click="confirmDeletion"
+            class="btn btn-danger btn-lg btn-block mb-2"
+            :disabled="hasChildren"
+            :title="hasChildren ? 'Cannot delete category with subcategories' : ''"
+          >
             Delete Category
           </button>
-          <!-- <button id="add-to-cart-button" class="btn btn-warning btn-lg btn-block mb-2">
-            Add to Cart
-          </button>
-          <button id="wishlist-button" class="btn btn-secondary btn-lg btn-block mb-2">
-            Add to Wishlist
-          </button>
-          <button id="show-cart-button" class="btn btn-dark btn-lg btn-block">View Cart</button> -->
+          <p v-if="hasChildren" class="text-danger">
+            Cannot delete category because it has subcategories.
+          </p>
         </div>
       </div>
     </div>
@@ -43,7 +56,8 @@ export default {
   data() {
     return {
       category: {},
-      parentCategoryName: ''
+      parentCategoryName: '',
+      hasChildren: false
     }
   },
   props: ['baseURL', 'categories'],
@@ -80,15 +94,16 @@ export default {
     console.log('mounted hook called')
     const categoryId = this.$route.params.id
     axios
-      .get(`${this.baseURL}category/${categoryId}`)
+      .get(`${this.baseURL}categories/products/tree/${categoryId}`)
       .then((response) => {
         this.category = response.data
+        this.hasChildren = this.category.children && this.category.children.length > 0
 
         if (this.category.parentId) {
-          const parentCategory = this.categories.find(
-            (category) => category.id == this.category.parentId
-          )
-          this.parentCategoryName = parentCategory ? parentCategory.name : 'No parent category'
+          // Fetch the parent category name as needed
+          axios.get(`${this.baseURL}category/${this.category.parentId}`).then((parentResponse) => {
+            this.parentCategoryName = parentResponse.data.name
+          })
         } else {
           this.parentCategoryName = 'No parent category'
         }

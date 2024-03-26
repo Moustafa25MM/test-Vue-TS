@@ -24,6 +24,16 @@
         <label for="productImage">Image</label>
         <input type="file" class="form-control-file" id="productImage" @change="handleFileUpload" />
       </div>
+      <div class="form-group mb-3">
+        <label for="productPrice">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="productPrice"
+          v-model="product.price"
+          required
+        />
+      </div>
       <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-secondary me-2" @click="cancel">Cancel</button>
         <button type="submit" class="btn btn-primary">Add Product</button>
@@ -43,7 +53,8 @@ export default {
       product: {
         name: '',
         categoryId: '',
-        picture: null
+        picture: null,
+        price: 0
       },
       categories: [],
       baseUrl: 'http://localhost:4300',
@@ -60,12 +71,21 @@ export default {
     },
     async submitProduct() {
       this.loading = true
+
+      const priceAsFloat = parseFloat(this.product.price)
+      if (isNaN(priceAsFloat)) {
+        this.loading = false
+        Swal.fire('Error', 'Invalid price format', 'error')
+        return
+      }
+
       const formData = new FormData()
       formData.append('name', this.product.name)
       formData.append('categoryId', this.product.categoryId)
       if (this.product.picture) {
         formData.append('picture', this.product.picture)
       }
+      formData.append('price', priceAsFloat)
 
       try {
         await axios.post(`${this.baseUrl}/products`, formData, {
