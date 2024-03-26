@@ -1,17 +1,20 @@
 <template>
   <div class="card h-100 w-100">
-    <div class="embed-responsive embed-responsive-16by9">
+    <router-link
+      :to="{ name: 'ShowCategoryDetails', params: { id: category.id } }"
+      class="embed-responsive embed-responsive-16by9"
+    >
       <div class="card-header">
-        <p class="card-title font-italic">Category Name: {{ category.name }}</p>
+        <p class="card-title font-italic">{{ category.name }}</p>
       </div>
       <img
         v-if="category.picture"
         class="card-img-top embed-responsive-item"
         :src="category.picture"
-        alt="Category Image"
+        :alt="`Image of ${category.name}`"
       />
       <div v-else class="card-img-top embed-responsive-item no-image">No Image Available</div>
-    </div>
+    </router-link>
 
     <!-- Card body with parent category below the picture -->
     <div class="card-body">
