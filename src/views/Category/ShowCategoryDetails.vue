@@ -14,7 +14,7 @@
         <!-- Add action buttons -->
         <div class="action-buttons mt-5">
           <router-link
-            :to="{ name: 'editProduct', params: { id: product.id } }"
+            :to="{ name: 'editCategory', params: { id: category.id } }"
             class="btn btn-info btn-lg btn-block mb-2"
           >
             Edit Product

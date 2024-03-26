@@ -7,7 +7,7 @@ import AddProduct from '../views/Product/AddProduct.vue'
 import Category from '../views/Category/Category.vue'
 import AddCategory from '../views/Category/AddCategory.vue'
 import ShowCategoryDetails from '../views/Category/ShowCategoryDetails.vue'
-
+import EditCategory from '../views/Category/EditCategory.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -51,6 +51,11 @@ const router = createRouter({
       path: '/category/:id',
       name: 'ShowCategoryDetails',
       component: ShowCategoryDetails
+    },
+    {
+      path: '/category/:id/edit',
+      name: 'editCategory',
+      component: EditCategory
     }
   ]
 })
